@@ -6,7 +6,15 @@
 export const getApiBaseUrl = (): string => {
   // Use environment variable (set in Vercel for production)
   if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL;
+    let baseUrl = import.meta.env.VITE_API_BASE_URL;
+    
+    // Ensure the URL starts with http:// or https://
+    if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+      console.warn('⚠️ VITE_API_BASE_URL missing protocol, adding https://');
+      baseUrl = `https://${baseUrl}`;
+    }
+    
+    return baseUrl;
   }
   
   // Fallback to localhost for development
